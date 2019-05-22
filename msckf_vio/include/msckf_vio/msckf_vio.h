@@ -200,7 +200,8 @@ class MsckfVio {
     double translation_threshold;
     double rotation_threshold;
     double tracking_rate_threshold;
-
+    
+    
     // Ros node handle
     ros::NodeHandle nh;
 

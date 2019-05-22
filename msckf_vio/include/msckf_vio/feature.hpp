@@ -140,12 +140,9 @@ struct Feature {
 
   // Store the observations of the features in the
   // state_id(key)-image_coordinates(value) manner.
-  //std::map<StateIDType, Eigen::Vector2d, std::less<StateIDType>,
-    //Eigen::aligned_allocator<
-      //std::pair<const StateIDType, Eigen::Vector2d> > > observations;
-  
-  std::map<StateIDType, Eigen::Vector2d, std::less<StateIDType>
-    > observations;
+  std::map<StateIDType, Eigen::Vector2d, std::less<StateIDType>,
+    Eigen::aligned_allocator<
+      std::pair<const StateIDType, Eigen::Vector2d> > > observations;
 
   // 3d postion of the feature in the world frame.
   Eigen::Vector3d position;
@@ -163,11 +160,9 @@ struct Feature {
 };
 
 typedef Feature::FeatureIDType FeatureIDType;
-//typedef std::map<FeatureIDType, Feature, std::less<int>,
-     //   Eigen::aligned_allocator<
-      //  std::pair<const FeatureIDType, Feature> > > MapServer;
-        
-typedef std::map<FeatureIDType, Feature, std::less<int>> MapServer;
+typedef std::map<FeatureIDType, Feature, std::less<int>,
+        Eigen::aligned_allocator<
+        std::pair<const FeatureIDType, Feature> > > MapServer;
 
 
 void Feature::cost(const Eigen::Isometry3d& T_c0_ci,
@@ -298,14 +293,10 @@ bool Feature::checkMotion(
 bool Feature::initializePosition(
     const CamStateServer& cam_states) {
   // Organize camera poses and feature observations properly.
-  //std::vector<Eigen::Isometry3d,
-   // Eigen::aligned_allocator<Eigen::Isometry3d> > cam_poses(0);
-
-  std::vector<Eigen::Isometry3d> cam_poses(0);
-    
-  //std::vector<Eigen::Vector2d,
-    //Eigen::aligned_allocator<Eigen::Vector2d> > measurements(0);
-  std::vector<Eigen::Vector2d> measurements(0);
+  std::vector<Eigen::Isometry3d,
+    Eigen::aligned_allocator<Eigen::Isometry3d> > cam_poses(0);
+  std::vector<Eigen::Vector2d,
+    Eigen::aligned_allocator<Eigen::Vector2d> > measurements(0);
 
   for (auto& m : observations) {
     // TODO: This should be handled properly. Normally, the
@@ -316,7 +307,7 @@ bool Feature::initializePosition(
 
     // Add the measurement.
     measurements.push_back(m.second.head<2>());
-    //measurements.push_back(m.second.tail<2>());
+   // measurements.push_back(m.second.tail<2>());
 
     // This camera pose will take a vector from this camera frame
     // to the world frame.

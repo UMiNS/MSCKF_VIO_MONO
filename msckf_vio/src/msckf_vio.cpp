@@ -483,7 +483,7 @@ void MsckfVio::mocapOdomCallback(
   //body_velocity_gt = mocap_initial_frame.linear().transpose() *
   //  body_velocity_gt;
 
-  // Ground truth tf.
+  // Ground truth tf.measurementJacobian
   if (publish_tf) {
     tf::Transform T_b_w_gt_tf;
     tf::transformEigenToTF(T_b_w_gt, T_b_w_gt_tf);
@@ -599,6 +599,8 @@ void MsckfVio::processModel(const double& time,
   // Propogate the state covariance matrix.
   Matrix<double, 21, 21> Q = Phi*G*state_server.continuous_noise_cov*
     G.transpose()*Phi.transpose()*dtime;
+  //Matrix<double, 21, 21> Q = G*state_server.continuous_noise_cov*
+   // G.transpose()*dtime;
   state_server.state_cov.block<21, 21>(0, 0) =
     Phi*state_server.state_cov.block<21, 21>(0, 0)*Phi.transpose() + Q;
 
@@ -788,7 +790,8 @@ void MsckfVio::measurementJacobian(
     const StateIDType& cam_state_id,
     const FeatureIDType& feature_id,
     Matrix<double, 2, 6>& H_x, Matrix<double, 2, 3>& H_f, Vector2d& r) {
-
+  
+  //fp = fopen("/home/lxh/pw.txt","w");
   // Prepare all the required data.
   const CAMState& cam_state = state_server.cam_states[cam_state_id];
   const Feature& feature = map_server[feature_id];
@@ -811,8 +814,11 @@ void MsckfVio::measurementJacobian(
   // the cam0 and cam1 frame.
   Vector3d p_c0 = R_w_c0 * (p_w-t_c0_w);
   //Vector3d p_c1 = R_w_c1 * (p_w-t_c1_w);
-  printf("t_c0_w:%f %f %f\n",t_c0_w(0),t_c0_w(1),t_c0_w(2));
-
+  //printf("t_c0_w:%f %f %f\n",t_c0_w(0),t_c0_w(1),t_c0_w(2));
+  //printf("p_w:%f %f %f\n",p_w(0),p_w(1),p_w(2));
+  //printf("p_c0:%f %f %f\n",p_c0(0),p_c0(1),p_c0(2));
+  //fprintf(fp,"%f %f %f\n",p_w(0),p_w(1),p_w(2));
+  
   // Compute the Jacobians.
   Matrix<double, 2, 3> dz_dpc0 = Matrix<double, 2, 3>::Zero();
   dz_dpc0(0, 0) = 1 / p_c0(2);
@@ -855,17 +861,11 @@ void MsckfVio::measurementJacobian(
   r = z - Vector2d(p_c0(0)/p_c0(2), p_c0(1)/p_c0(2));
   
   Vector2d tmpv = Vector2d(p_c0(0)/p_c0(2), p_c0(1)/p_c0(2));
-  printf("\n\nLK res:%f %f\n",z(0),z(1));
-  printf("predict LK res:%f %f\n",tmpv(0),tmpv(1));
-  printf("reproject error:%f %f\n\n\n",r(0),r(1));
+  //printf("\n\nLK res:%f %f\n",z(0),z(1));
+  //printf("predict LK res:%f %f\n",tmpv(0),tmpv(1));
+  //printf("reproject error:%f %f\n\n\n",r(0),r(1));
   
-  if(r.norm()>0.1)
-  {
-    //H_x = Matrix<double, 2, 6>::Zero();
-    //H_f = Matrix<double, 2, 3>::Zero();
-    //r = Vector2d::Zero();
-    
-  }
+ 
 
   return;
 }

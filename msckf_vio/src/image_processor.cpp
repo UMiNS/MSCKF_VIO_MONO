@@ -306,11 +306,11 @@ void ImageProcessor::imuCallback(
 }
 
 void ImageProcessor::createImagePyramids() {
- // cv::Mat img;
-  //cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(3.0, cv::Size(8, 8));
- // clahe->apply(cam0_curr_img_ptr->image, img);
+  cv::Mat img;
+  cv::Ptr<cv::CLAHE> clahe = cv::createCLAHE(3.0, cv::Size(8, 8));
+  clahe->apply(cam0_curr_img_ptr->image, img);
     
-  const Mat& curr_cam0_img = cam0_curr_img_ptr->image;
+  const Mat& curr_cam0_img = img;//cam0_curr_img_ptr->image;
   buildOpticalFlowPyramid(
       curr_cam0_img, curr_cam0_pyramid_,
       Size(processor_config.patch_size, processor_config.patch_size),
@@ -951,7 +951,10 @@ void ImageProcessor::integrateImuData(
           cam0_prev_img_ptr->header.stamp).toSec() < -0.01)
       ++begin_iter;
     else
+    {
+    //printf("break.......................................\n");
       break;
+    }
   }
 
   auto end_iter = begin_iter;
@@ -959,8 +962,10 @@ void ImageProcessor::integrateImuData(
     if ((end_iter->header.stamp-
           cam0_curr_img_ptr->header.stamp).toSec() < 0.005)
       ++end_iter;
-    else
+    else{
+        //printf("break.............................\n");
       break;
+    }
   }
 
   // Compute the mean angular velocity in the IMU frame.

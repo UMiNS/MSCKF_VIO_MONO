@@ -60,10 +60,10 @@ struct CAMState {
 #endif    
 };
 
-//typedef std::map<StateIDType, CAMState, std::less<int>,
-       // Eigen::aligned_allocator<
-        //std::pair<const StateIDType, CAMState> > > CamStateServer;
-typedef std::map<StateIDType, CAMState> CamStateServer;        
+typedef std::map<StateIDType, CAMState, std::less<int>,
+        Eigen::aligned_allocator<
+        std::pair<const StateIDType, CAMState> > > CamStateServer;
+//typedef std::map<StateIDType, CAMState> CamStateServer;        
 } // namespace msckf_vio
 
 #endif // MSCKF_VIO_CAM_STATE_H

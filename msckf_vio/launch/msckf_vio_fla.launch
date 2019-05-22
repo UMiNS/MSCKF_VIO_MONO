@@ -21,10 +21,10 @@
       <rosparam command="load" file="$(arg calibration_file)"/>
 
       <param name="publish_tf" value="true"/>
-      <param name="frame_rate" value="40"/>
+      <param name="frame_rate" value="10"/>
       <param name="fixed_frame_id" value="$(arg fixed_frame_id)"/>
       <param name="child_frame_id" value="odom"/>
-      <param name="max_cam_state_size" value="20"/>
+      <param name="max_cam_state_size" value="25"/>
       <param name="position_std_threshold" value="8.0"/>
 
       <param name="rotation_threshold" value="0.2618"/>
