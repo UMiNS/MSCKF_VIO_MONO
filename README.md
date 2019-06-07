@@ -1,7 +1,7 @@
 # MSCKF_VIO_MONO
-Monocular MSCKF_VIO，这是KumarRobotics/msckf_vio双目msckf_vio的单目版本，在视觉前段加入了直方图均衡化，除此之外只把双目模型改成了单目模型。
+Monocular MSCKF_VIO，这是KumarRobotics/msckf_vio双目msckf_vio的单目版本，在视觉前端加入了直方图均衡化，除此之外只把双目模型改成了单目模型。
 对于算法的视觉前段，还可以把fast特征改成ORB、SIFT等特征，可以提高定位精度，改善稳定性，大家可以尝试；
 对于融合部分我也做了一些算法修改和优化，但是这部分更改没有上传。
-在代码目录下还给出了msckf1.0.doc算法文档，给出了msckf_vio算法的详细推导过程和一些分析，可以与代码相对对照着理解。
+还给出了msckf1.0.doc算法文档，给出了msckf_vio算法的详细推导过程和一些分析，可以与代码相对对照着理解。
 希望这些代码和算法文档对大家有用，觉得有可取之处的话麻烦给个星^_^
 文档难免有什么疏漏，还请各位同行批评指正，请联系xiphix@126.com
